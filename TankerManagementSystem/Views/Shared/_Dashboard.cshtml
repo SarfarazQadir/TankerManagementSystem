@@ -1,0 +1,216 @@
+﻿@using TankerManagementSystem.Models
+
+@inject IHttpContextAccessor HttpContextAccessor
+@inject TankerDbContext _context
+
+@{
+    string adminSession = HttpContextAccessor.HttpContext.Session.GetString("admin_session");
+    var admin = _context.tbl_admin.FirstOrDefault(x => x.admin_id.ToString() == adminSession); // or by ID
+    string name = admin?.admin_name ?? "Admin";
+    string profileImage = !string.IsNullOrEmpty(admin?.admin_image)
+        ? Url.Content("~/Adminassests/AdminImages/" + admin.admin_image)
+        : Url.Content("~/img/user.png"); // fallback image
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+    <title>Tanker Management System</title>
+    <!-- General CSS Files -->
+    <link rel="stylesheet" href="~/css/app.min.css">
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="~/css/style.css">
+    <link rel="stylesheet" href="~/css/components.css">
+    <!-- Include iziToast CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
+    <!-- Sweet Alert link -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <!-- Custom style CSS -->
+    <link rel="stylesheet" href="~/css/custom.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel='shortcut icon' type='image/x-icon' href='~/img/flyeasy.png' />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.27.1/slimselect.min.css" rel="stylesheet"></link>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.27.1/slimselect.min.js"></script>
+
+    <!-- ✅ DataTables Bootstrap 5 CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+</head>
+<body>
+    <div class="loader"></div>
+    <div id="app">
+        <div class="main-wrapper main-wrapper-1">
+            <div class="navbar-bg"></div>
+            <nav class="navbar navbar-expand-lg main-navbar sticky">
+                <div class="form-inline mr-auto">
+                    <ul class="navbar-nav mr-3">
+                        <li>
+                            <a href="#" data-toggle="sidebar" class="nav-link nav-link-lg collapse-btn">
+                                <i data-feather="align-justify"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link nav-link-lg fullscreen-btn">
+                                <i data-feather="maximize"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <ul class="navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" data-toggle="dropdown"
+                           class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+                            <img alt="image" src="@profileImage" style="margin-top: 34px !important;" class="user-img-radious-style" />
+                            <span style="color:black !important;display:flex !important;margin-left: -4px !important;">@name</span>
+                            @* <span class="d-sm-none d-lg-inline-block">@name</span> *@
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right pullDown">
+                            <div class="dropdown-title">@name</div>
+                            <a href="@Url.Action("Profile", "Admin")" class="dropdown-item has-icon">
+                                <i class="far fa-user"></i> Profile
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="@Url.Action("Logout", "Admin")" class="dropdown-item has-icon text-danger">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+
+            </nav>
+            <div class="main-sidebar sidebar-style-2">
+                <aside id="sidebar-wrapper">
+                    <div class="sidebar-brand">
+                        <a href="@Url.Action("index", "admin")">
+                            <img style="height:100px !important;" alt="image" src="~/img/flyeasy.png" class="header-logo" />
+                            @* <span class="logo-name">Bill Book</span> *@
+                        </a>
+                    </div>
+                    <ul class="sidebar-menu">
+
+                        <li class="dropdown active">
+                            <a href="@Url.Action("Index", "Admin")" class="nav-link">
+                                <i data-feather="home"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+
+                        <li class="dropdown">
+                            <a href="@Url.Action("Index", "TripEntry")" class="nav-link">
+                                <i data-feather="map"></i>
+                                <span>Trip Entry</span>
+                            </a>
+                        </li>
+
+                        <li class="dropdown">
+                            <a href="@Url.Action("Index", "TripLedger")" class="nav-link">
+                                <i data-feather="book"></i>
+                                <span>Trip Ledger</span>
+                            </a>
+                        </li>
+
+                        <li class="dropdown">
+                            <a href="@Url.Action("FetchUsers", "User")" class="nav-link">
+                                <i data-feather="users"></i>
+                                <span>Add User</span>
+                            </a>
+                        </li>
+
+                        <li class="dropdown">
+                            <a href="@Url.Action("Index", "Products")" class="nav-link">
+                                <i data-feather="box"></i>
+                                <span>Add Products</span>
+                            </a>
+                        </li>
+
+                        <li class="dropdown">
+                            <a href="@Url.Action("Index", "TankerOwner")" class="nav-link">
+                                <i data-feather="user"></i>
+                                <span>Add Tanker Owner</span>
+                            </a>
+                        </li>
+
+                        <li class="dropdown">
+                            <a href="@Url.Action("Index", "Tanker")" class="nav-link">
+                                <i data-feather="truck"></i>
+                                <span>Add Tanker</span>
+                            </a>
+                        </li>
+
+                        <li class="dropdown">
+                            <a href="@Url.Action("Index", "Commission")" class="nav-link">
+                                <i data-feather="percent"></i>
+                                <span>Add Commission</span>
+                            </a>
+                        </li>
+
+                        <li class="dropdown">
+                            <a href="@Url.Action("Index", "DailyLedger")" class="nav-link">
+                                <i data-feather="file-text"></i>
+                                <span>Daily Ledger</span>
+                            </a>
+                        </li>
+
+                        <li class="dropdown">
+                            <a href="@Url.Action("Logout", "Admin")" class="nav-link">
+                                <i data-feather="log-out"></i>
+                                <span>Logout</span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </aside>
+            </div>
+            <!-- Main Content -->
+            <div class="main-content">
+                <div>
+                    @RenderBody()
+                </div>
+            </div>
+            <!-- Main Content End -->
+            <footer class="main-footer">
+                <div class="footer-left">
+                    <a href="@Url.Action("Index", "admin")">Bill Book Management</a>
+                </div>
+                <div class="footer-right"></div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- General JS Scripts -->
+    <script src="~/js/app.min.js"></script>
+    <!-- JS Libraies -->
+    <script src="~/bundles/apexcharts/apexcharts.min.js"></script>
+    <!-- Page Specific JS File -->
+    <script src="~/js/page/index.js"></script>
+    <!-- Template JS File -->
+    <script src="~/js/scripts.js"></script>
+    <!-- Custom JS File -->
+    <script src="~/js/custom.js"></script>
+
+    <!-- ✅ jQuery (zaroori for DataTables) -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <!-- ✅ DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+    <!-- ✅ Initialize DataTables -->
+    <script>
+        $(document).ready(function () {
+            // Agar koi bhi table id="myTable" hogi to DataTables enable ho jayega
+            $('#myTable').DataTable();
+        });
+    </script>
+
+    <script>
+        new SlimSelect({
+            select: '#Selectslim'
+        })
+    </script>
+</body>
+</html>

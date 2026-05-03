@@ -1,0 +1,96 @@
+﻿@model IEnumerable<TankerManagementSystem.Models.TripLedger>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+
+@if (TempData["add_ledger"] != null)
+{
+    <script>
+        Swal.fire({
+            title: '@TempData["add_ledger"]',
+            icon: 'success'
+        });
+    </script>
+}
+
+@if (TempData["edit_ledger"] != null)
+{
+    <script>
+        Swal.fire({
+            title: '@TempData["edit_ledger"]',
+            icon: 'success'
+        });
+    </script>
+}
+
+<section class="section">
+    <div class="section-body">
+
+        <br /><br />
+
+        <div class="card">
+            <div class="card-header">
+                <h4>Tanker Owner Details</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-hover" id="myTable">
+                        <thead>
+                            <tr>
+                                <th>S.No</th>
+                                <th>Trip</th>
+                                <th>Product</th>
+                                <th>Freight</th>
+                                <th>Grand Total</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @{
+                                int i = 1;
+                            }
+
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@i</td>
+                                    <td>@item.TripEntryFk?.ToLocation</td>
+                                    <td>@item.Product?.ProductName</td>
+                                    <td>@Math.Floor(item.Freight)</td>
+                                    <td>@Math.Floor(item.GrandTotal)</td>
+
+                                    <td>
+                                        <div class="dropdown">
+                                            <a href="#" data-toggle="dropdown" class="btn btn-warning dropdown-toggle">Options</a>
+                                            <div class="dropdown-menu">
+                                                <a href="@Url.Action("EditLedger", new { id = item.Id })" class="dropdown-item has-icon">
+                                                    <i class="far fa-edit"></i> Edit
+                                                </a>
+                                                <a href="@Url.Action("PrintBill", new { id = item.Id })" class="dropdown-item has-icon">
+                                                    <i class="far fa-print"></i> Print
+                                                </a>
+                                                <a href="javascript:void(0);" onclick="confirmDelete(@item.Id)" class="dropdown-item has-icon text-danger">
+                                                    <i class="far fa-trash-alt"></i> Delete
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                i++;
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>

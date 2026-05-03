@@ -1,0 +1,203 @@
+﻿
+@{
+    ViewData["Title"] = "AddLedger";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+@{
+    var trip = ViewBag.Trip;
+}
+
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+
+                    <div class="card-header">
+                        <h4>Add Trip Ledger</h4>
+                    </div>
+
+                    <div class="card-body">
+
+                        <form method="post" asp-action="AddLedger">
+
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Trip ID</label>
+                                <div class="col-sm-9">
+                                    <input type="text" value="@trip.Id" class="form-control" readonly />
+                                    <input type="hidden" name="TripEntryId" value="@trip.Id" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Tanker No</label>
+                                <div class="col-sm-9">
+                                    <input type="text" value="@trip.TankerFk?.TankerNo" class="form-control" readonly />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">From</label>
+                                <div class="col-sm-9">
+                                    <input type="text" value="@trip.FromLocation" class="form-control" readonly />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">To</label>
+                                <div class="col-sm-9">
+                                    <input type="text" value="@trip.ToLocation" class="form-control" readonly />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Invoice Date</label>
+                                <div class="col-sm-9">
+                                    <input type="date" name="TripDate" class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Product</label>
+                                <div class="col-sm-9">
+                                    <select name="ProductId" class="form-control">
+                                        <option value="">Select Product</option>
+                                        @foreach (var p in ViewBag.Products)
+                                        {
+                                            <option value="@p.Id">@p.ProductName</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Token No</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="TokenNo" class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label style="color: green;" class="col-sm-3 col-form-label">Freight</label>
+                                <div class="col-sm-9">
+                                    <input type="number" name="Freight" class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label style="color: red;" class="col-sm-3 col-form-label">Advance Cash</label>
+                                <div class="col-sm-9">
+                                    <input type="number" name="AdvanceCash" value="@trip.AdvanceCash" class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label style="color: red;" class="col-sm-3 col-form-label">Shortage</label>
+                                <div class="col-sm-9">
+                                    <input type="number" name="Shortage" class="form-control" />
+                                </div>
+                            </div>
+
+                        @*     <div class="form-group row">
+                                <label style="color: red;" class="col-sm-3 col-form-label">Commission</label>
+                                <div class="col-sm-9">
+                                    <input type="number" name="Commission" id="commission" class="form-control" readonly />
+                                </div>
+                            </div> *@
+
+                            <div class="form-group row">
+                                <label style="color: red;" class="col-sm-3 col-form-label">Munshiana</label>
+                                <div class="col-sm-9">
+                                    <input type="number" name="Munshiana" class="form-control" />
+                                </div>
+                            </div>
+                             @* new *@
+                            <div class="form-group row">
+                                <label style="color: red;" class="col-sm-3 col-form-label">Previous Balance (Tanker)</label>
+                                <div class="col-sm-9">
+                                    <input type="number" id="tankerBalance"
+                                           value="@ViewBag.TankerPreviousBalance"
+                                           class="form-control" readonly />
+
+                                    <!-- Hidden for post -->
+                                    <input type="hidden" name="PreviousBalance"
+                                           value="@ViewBag.TankerPreviousBalance" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label style="color: red;" class="col-sm-3 col-form-label">Remaining Balance</label>
+                                <div class="col-sm-9">
+                                    <input type="number" id="remainingBalance" class="form-control" readonly />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label style="color: red;" class="col-sm-3 col-form-label">Paying Amount</label>
+                                <div class="col-sm-9">
+                                    <input type="number" id="payingAmount" name="PayingAmount" class="form-control" />                                    <span id="balanceWarning" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <hr />
+                            <h5>Expenses</h5>
+
+                            <div id="expenseContainer"></div>
+
+                            <button type="button" onclick="addExpense()" class="btn btn-info mb-3">
+                                Add Expense
+                            </button>
+
+                            <div class="card-footer text-center">
+                                <input type="submit" value="Add Ledger" class="btn btn-primary" />
+                                <a href="@Url.Action("Index")" class="btn btn-secondary">Back</a>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    const tankerBalance = document.getElementById("tankerBalance");
+    const payingAmount = document.getElementById("payingAmount");
+    const remainingBalance = document.getElementById("remainingBalance");
+    const warning = document.getElementById("balanceWarning");
+
+    payingAmount.addEventListener("input", function () {
+        let prev = parseFloat(tankerBalance.value) || 0;
+        let pay = parseFloat(payingAmount.value) || 0;
+
+        let remaining = prev - pay;
+        remainingBalance.value = remaining;
+
+        if (pay > prev) {
+            warning.innerText = "Amount exceeds tanker balance!";
+        } else {
+            warning.innerText = "";
+        }
+    });
+</script>
+<script>
+    let i = 0;
+
+    function addExpense() {
+        let container = document.getElementById("expenseContainer");
+
+        let div = document.createElement("div");
+        div.className = "row mb-2";
+
+        div.innerHTML = `
+            <div class="col-md-6">
+                <input type="text" name="expenses[${i}].ExpenseName" class="form-control" placeholder="Expense Name" />
+            </div>
+            <div class="col-md-4">
+                <input type="number" name="expenses[${i}].Amount" class="form-control" placeholder="Amount" />
+            </div>
+        `;
+
+        container.appendChild(div);
+
+        i++;
+    }
+</script>

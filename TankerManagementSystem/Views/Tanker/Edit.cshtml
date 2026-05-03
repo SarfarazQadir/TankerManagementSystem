@@ -1,0 +1,64 @@
+﻿@model TankerManagementSystem.Models.Tanker
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+
+
+
+<section class="section">
+    <div class="section-body">
+        <div class="card">
+            <div class="card-header">
+                <h4>Edit Tanker</h4>
+            </div>
+
+            <div class="card-body">
+                <form method="post" asp-action="Edit">
+
+                    <input type="hidden" asp-for="Id" />
+
+                    <div class="form-group">
+                        <label>Tanker No</label>
+                        <input asp-for="TankerNo" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Select Owner</label>
+                        <select asp-for="OwnerId" class="form-control">
+                            @foreach (var item in ViewBag.Owners)
+                            {
+                                <option value="@item.Id" selected="@(item.Id == Model.OwnerId)">
+                                    @item.Id - @item.Name
+                                </option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Model</label>
+                        <input asp-for="Model" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Capacity</label>
+                        <input asp-for="Capacity" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Previous Balance</label>
+                        <input asp-for="PreviousBalance" class="form-control" />
+                    </div>
+
+                    <div class="text-center">
+                        <input type="submit" value="Update Tanker" class="btn btn-primary" />
+                        <a href="@Url.Action("Index")" class="btn btn-secondary">Back</a>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+

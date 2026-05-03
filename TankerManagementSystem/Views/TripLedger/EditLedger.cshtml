@@ -1,0 +1,68 @@
+﻿@model TankerManagementSystem.Models.TripLedger
+
+@{
+    ViewData["Title"] = "EditLedger";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+
+
+<section class="section">
+    <div class="section-body">
+        <div class="card">
+
+            <div class="card-header">
+                <h4>Edit Trip Ledger</h4>
+            </div>
+
+            <div class="card-body">
+
+                <form method="post" asp-action="EditLedger">
+
+                    <input type="hidden" asp-for="Id" />
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Freight</label>
+                        <div class="col-sm-9">
+                            <input asp-for="Freight" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Advance Cash</label>
+                        <div class="col-sm-9">
+                            <input asp-for="AdvanceCash" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Shortage</label>
+                        <div class="col-sm-9">
+                            <input asp-for="Shortage" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Commission</label>
+                        <div class="col-sm-9">
+                            <input asp-for="Commission" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Munshiana</label>
+                        <div class="col-sm-9">
+                            <input asp-for="Munshiana" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="card-footer text-center">
+                        <input type="submit" value="Update Ledger" class="btn btn-primary" />
+                        <a href="@Url.Action("Index")" class="btn btn-secondary">Back</a>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</section>

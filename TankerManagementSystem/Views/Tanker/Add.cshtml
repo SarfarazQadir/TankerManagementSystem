@@ -1,0 +1,62 @@
+﻿
+@{
+    ViewData["Title"] = "Add";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+
+
+<section class="section">
+    <div class="section-body">
+        <div class="card">
+            <div class="card-header">
+                <h4>Add Tanker</h4>
+            </div>
+
+            <div class="card-body">
+                <form method="post" asp-action="Add">
+
+                    <div class="form-group">
+                        <label>Tanker No</label>
+                        <input type="text" name="TankerNo" class="form-control" placeholder="Enter Tanker No" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Select Owner</label>
+                        <select name="OwnerId" class="form-control">
+                            <option value="">-- Select Owner --</option>
+
+                            @foreach (var item in ViewBag.Owners)
+                            {
+                                <option value="@item.Id">
+                                    @item.Id - @item.Name
+                                </option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Model</label>
+                        <input type="text" name="Model" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Capacity</label>
+                        <input type="text" name="Capacity" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Previous Balance</label>
+                        <input type="number" name="PreviousBalance" class="form-control" />
+                    </div>
+
+                    <div class="text-center">
+                        <input type="submit" value="Add Tanker" class="btn btn-primary" />
+                        <a href="@Url.Action("Index")" class="btn btn-secondary">Back</a>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+

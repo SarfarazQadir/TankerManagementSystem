@@ -1,0 +1,47 @@
+﻿@model TankerManagementSystem.Models.Product
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12 col-md-6 col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Add Product</h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" asp-action="Edit">
+                            <input type="hidden" asp-for="Id" />
+
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Name</label>
+                                <div class="col-sm-9">
+                                    <input asp-for="ProductName" class="form-control" />
+                                    <span asp-validation-for="ProductName" placeholder="Enter Product Name" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Description</label>
+                                <div class="col-sm-9">
+                                    <input asp-for="Description" class="form-control" />
+                                    <span asp-validation-for="Description" placeholder="Enter Description" class="text-danger"></span>
+                                </div>
+                            </div>
+                          @*   <div class="card-footer center">
+                                <input type="submit" value="Edit Product" class="btn btn-primary" />
+                                <a href="@Url.Action("Index")" class="btn btn-secondary">Back</a>
+                            </div> *@
+                            <div class="card-footer text-center">
+                                <input type="submit" value="Update Product" class="btn btn-primary" />
+                                <a href="@Url.Action("Index")" class="btn btn-secondary">Back</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
