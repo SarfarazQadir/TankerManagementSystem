@@ -4,7 +4,7 @@ using TankerManagementSystem.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 
-// DbContext Old
+// DbContext Old with new
 builder.Services.AddDbContext<TankerDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("conn")));
 
